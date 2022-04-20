@@ -2,6 +2,7 @@ import UIKit
 
 class ViewController: UIViewController
 {
+    let ExitButton = UIButton()
 	//размеры экрана
 	public var screenWidth: CGFloat
 	{
@@ -17,10 +18,10 @@ class ViewController: UIViewController
 	let Stack1 = UIStackView()
 	
 	
-	@objc func buttonClicked(_ sender: Any)
+	@objc func ExitButtonClicked(_ sender: Any)
 	{
 		
-		label2.text! += "aa "
+        exit(0)
 	}
 	
 	override func viewDidLoad()
@@ -37,56 +38,52 @@ class ViewController: UIViewController
 		let newView = UIView()
 
 		//2. Устанавливаем ему цвет и другие параметры
-		newView.backgroundColor = UIColor.red
+        newView.backgroundColor = UIColor.systemBackground
 
 		//3. Добавляем его (newView) на наше основное View
 		view.addSubview(newView)
-		newView.addSubview(label2)
+		//newView.addSubview(label2)
 		//4. Отключаем constraint перед установкой своих
 		newView.translatesAutoresizingMaskIntoConstraints = false
 		label2.translatesAutoresizingMaskIntoConstraints = false
 		NSLayoutConstraint.activate(
 			[
-                newView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -10),
-				newView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-                newView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
-                newView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor, constant: 10)
+                newView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+				newView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+                newView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+                newView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor)
 
 			]
 		)
 
-		let button = UIButton()
-		button.backgroundColor = UIColor.black
-		button.titleLabel?.textColor = UIColor.white
-
+		
+        
+        
+        
+        ExitButton.backgroundColor = UIColor.systemBackground
+        ExitButton.titleLabel?.textColor = UIColor.red
+//        ExitButton.layer.borderColor = UIColor.gray.cgColor
+//        ExitButton.layer.borderWidth = 1
+    
+        
 		let buttonText = "ButtonText"
-		let font = UIFont.systemFont(ofSize: 20)
+		let font = UIFont.systemFont(ofSize: 25)
 		let attributes = [NSAttributedString.Key.font: font]
 		let attributeString = NSAttributedString(string: buttonText, attributes: attributes)
-		button.setAttributedTitle(attributeString, for: .normal)
+        ExitButton.setAttributedTitle(attributeString, for: .normal)
 				//button.setTitle(" Button", forState: .Normal)
 
-		button.addTarget(self, action: #selector(buttonClicked), for: .touchUpInside)
-		button.translatesAutoresizingMaskIntoConstraints = false
-		newView.addSubview(button)
+        ExitButton.addTarget(self, action: #selector(ExitButtonClicked), for: .touchUpInside)
+        ExitButton.translatesAutoresizingMaskIntoConstraints = false
+		newView.addSubview(ExitButton)
 	
 		NSLayoutConstraint.activate(
 		[
-			button.rightAnchor.constraint(equalTo: button.superview!.rightAnchor, constant: -5),
-			button.topAnchor.constraint(equalTo: newView.topAnchor, constant: 5),
-			button.bottomAnchor.constraint(equalTo: newView.topAnchor, constant: 100),
-			button.leftAnchor.constraint(equalTo: newView.leftAnchor, constant: 5)
+            ExitButton.rightAnchor.constraint(equalTo: ExitButton.superview!.rightAnchor, constant: 0),
+            ExitButton.topAnchor.constraint(equalTo: ExitButton.superview!.bottomAnchor, constant: -50),
+            ExitButton.bottomAnchor.constraint(equalTo: ExitButton.superview!.bottomAnchor, constant: 0),
+            ExitButton.leftAnchor.constraint(equalTo: ExitButton.superview!.leftAnchor, constant: 0)
 		 
 		])
-		NSLayoutConstraint.activate(
-		[
-			label2.rightAnchor.constraint(equalTo: newView.rightAnchor, constant: -5),
-			label2.topAnchor.constraint(equalTo: newView.subviews[1].bottomAnchor, constant: 5),
-			label2.bottomAnchor.constraint(equalTo: newView.bottomAnchor, constant: -5),
-			label2.leftAnchor.constraint(equalTo: newView.leftAnchor, constant: 5)
-	 
-		])
-
-
 	}
 }
