@@ -6,7 +6,10 @@ import UIKit
 //самый нижний слой
 class DialogViewController: UIViewController
 {
+    let TextArea = UITextView()
     let MainView = UIView()
+    var messages: [String] = ["1", "jhds"]
+    var labels: [UILabel] = []
     //размеры экрана
     public var screenWidth: CGFloat
     {
@@ -68,8 +71,40 @@ class DialogViewController: UIViewController
 
             ]
         )
-
-        let TextArea = UITextView()
+        for i in 0..<messages.count
+        {
+            labels.append(UILabel())
+            labels.last!.text = messages[i]
+            labels.last!.backgroundColor = .systemGreen
+            labels.last!.textColor = .white
+            
+            MainView.addSubview(labels.last!)
+            labels.last!.textAlignment = .right
+            labels.last!.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 20)
+            labels.last!.layer.cornerRadius = 30
+            labels.last!.translatesAutoresizingMaskIntoConstraints = false
+            if i == 0 {
+                NSLayoutConstraint.activate(
+                [
+                    labels.last!.rightAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.rightAnchor, constant: -10),
+                    labels.last!.topAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.topAnchor, constant: 0),
+                    labels.last!.bottomAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.topAnchor, constant: 50),
+                    labels.last!.leftAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.leftAnchor, constant: 10)
+                ])
+            }
+            else{
+                
+            NSLayoutConstraint.activate(
+            [
+                labels.last!.rightAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.rightAnchor, constant: -10),
+                labels.last!.topAnchor.constraint(equalTo: MainView.subviews[MainView.subviews.count - 2].safeAreaLayoutGuide.bottomAnchor, constant: 10),
+                labels.last!.bottomAnchor.constraint(equalTo: labels.last!.topAnchor, constant: 50),
+                labels.last!.leftAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leftAnchor, constant: 10)
+            ])
+            }
+        }
+        
+      
         
         TextArea.translatesAutoresizingMaskIntoConstraints = false
         TextArea.backgroundColor = .systemBackground
@@ -90,7 +125,7 @@ class DialogViewController: UIViewController
         let SendButton = UIButton()
         
         SendButton.setImage(UIImage(named: "send.png"), for: .normal)
-        
+        SendButton.addTarget(self, action: #selector(SendButtonClicked), for: .touchUpInside)
         MainView.addSubview(SendButton)
         
         SendButton.translatesAutoresizingMaskIntoConstraints = false
@@ -105,4 +140,13 @@ class DialogViewController: UIViewController
         )
         
     }
+    
+    
+    
+    @objc func SendButtonClicked(_ sender: Any)
+    {
+        messages.append(TextArea.text)
+        self.viewDidLoad()
+    }
+    
 }
