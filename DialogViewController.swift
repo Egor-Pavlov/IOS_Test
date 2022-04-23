@@ -74,22 +74,30 @@ class DialogViewController: UIViewController
         for i in 0..<messages.count
         {
             labels.append(UILabel())
-            labels.last!.text = messages[i]
-            labels.last!.backgroundColor = .systemGreen
+            labels.last!.text = (messages[i])
+            labels.last!.backgroundColor = UIColor.systemCyan
             labels.last!.textColor = .white
             
             MainView.addSubview(labels.last!)
-            labels.last!.textAlignment = .right
+            labels.last!.textAlignment = .center
             labels.last!.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 20)
-            labels.last!.layer.cornerRadius = 30
+            labels.last!.layer.cornerRadius = 15
+            labels.last!.layer.masksToBounds = true
             labels.last!.translatesAutoresizingMaskIntoConstraints = false
+            
+            var size = 45
+            if size < messages[i].count * 10 + 20
+            {
+                size = messages[i].count * 10 + 20
+            }
+            
             if i == 0 {
                 NSLayoutConstraint.activate(
                 [
                     labels.last!.rightAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.rightAnchor, constant: -10),
                     labels.last!.topAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.topAnchor, constant: 0),
                     labels.last!.bottomAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.topAnchor, constant: 50),
-                    labels.last!.leftAnchor.constraint(equalTo: labels.last!.superview!.safeAreaLayoutGuide.leftAnchor, constant: 10)
+                    labels.last!.leftAnchor.constraint(equalTo: labels.last!.superview!.rightAnchor, constant: -CGFloat(size))
                 ])
             }
             else{
@@ -99,7 +107,7 @@ class DialogViewController: UIViewController
                 labels.last!.rightAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.rightAnchor, constant: -10),
                 labels.last!.topAnchor.constraint(equalTo: MainView.subviews[MainView.subviews.count - 2].safeAreaLayoutGuide.bottomAnchor, constant: 10),
                 labels.last!.bottomAnchor.constraint(equalTo: labels.last!.topAnchor, constant: 50),
-                labels.last!.leftAnchor.constraint(equalTo: MainView.safeAreaLayoutGuide.leftAnchor, constant: 10)
+                labels.last!.leftAnchor.constraint(equalTo: labels.last!.rightAnchor, constant: -CGFloat(size))
             ])
             }
         }
@@ -146,6 +154,7 @@ class DialogViewController: UIViewController
     @objc func SendButtonClicked(_ sender: Any)
     {
         messages.append(TextArea.text)
+        TextArea.text = ""
         self.viewDidLoad()
     }
     
