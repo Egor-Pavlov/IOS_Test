@@ -24,7 +24,6 @@ class ViewController: UIViewController
     {
         super.viewDidAppear(animated)
         super.viewDidLoad()
-        print(navigationController!.viewControllers.count)
     
     }
     override func viewDidLoad()
@@ -33,7 +32,7 @@ class ViewController: UIViewController
         super.viewDidLoad()
 
         //Устанавливаем ему цвет и другие параметры
-        newView.backgroundColor = UIColor.systemGray6
+        newView.backgroundColor = UIColor.systemGray5
 
         //Добавляем его на основное View (чтобы полностью перекрасить)
         view.addSubview(newView)

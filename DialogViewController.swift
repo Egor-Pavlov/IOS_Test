@@ -53,7 +53,7 @@ class DialogViewController: UIViewController
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
-        MainView.backgroundColor = UIColor.systemGray6
+        MainView.backgroundColor = UIColor.systemGray5
 
         view.addSubview(MainView)
 
@@ -74,20 +74,35 @@ class DialogViewController: UIViewController
         TextArea.translatesAutoresizingMaskIntoConstraints = false
         TextArea.backgroundColor = .systemBackground
         TextArea.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 18)
-        
+        TextArea.layer.cornerRadius = 10
         MainView.addSubview(TextArea)
         
         NSLayoutConstraint.activate(
             [
-                TextArea.rightAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.rightAnchor, constant: -10),
-                TextArea.topAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -50 ),
+                TextArea.rightAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.rightAnchor, constant: -70),
+                TextArea.topAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -45 ),
                 TextArea.bottomAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-                TextArea.leftAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.leftAnchor, constant: 10)
+                TextArea.leftAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.leftAnchor, constant: 20)
 
             ]
         )
         
+        let SendButton = UIButton()
+        
+        SendButton.setImage(UIImage(named: "send.png"), for: .normal)
+        
+        MainView.addSubview(SendButton)
+        
+        SendButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(
+            [
+                SendButton.rightAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.rightAnchor, constant: -15),
+                SendButton.topAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -50 ),
+                SendButton.bottomAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                SendButton.leftAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.rightAnchor, constant: -55)
 
+            ]
+        )
         
     }
 }
