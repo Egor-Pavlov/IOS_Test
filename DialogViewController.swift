@@ -96,7 +96,6 @@ class DialogViewController: UIViewController
         )
         
         contentView.addSubview(container)
-        //label.frame = CGRect(x: 50, y: 50, width: UIScreen.main.bounds.width , height: 100)
         container.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(
         [
@@ -107,15 +106,15 @@ class DialogViewController: UIViewController
             container.bottomAnchor.constraint(equalTo: container.superview!.bottomAnchor, constant: 108.0)
         ])
         contentView.sizeToFit()
+        labels.removeAll()
         for i in 0..<messages.count
         {
             labels.append(UILabel())
             labels.last!.text = (messages[i])
             labels.last!.backgroundColor = UIColor.systemCyan
             labels.last!.textColor = .white
-            
-            ScrollView.addSubviewAtBottomOfAllSubviews(view: labels.last!)
-            //ScrollView.addSubview(labels.last!)
+        
+            ScrollView.addSubview(labels.last!)
             labels.last!.textAlignment = .center
             labels.last!.numberOfLines = 0
             labels.last!.sizeToFit()
@@ -152,9 +151,21 @@ class DialogViewController: UIViewController
             
         }
 
-            ScrollView.resizeContentSize()
-//       ScrollView.backgroundColor = .red
+        var h = 0
+        for i in 0..<labels.count
+        {
+            
+            h += 60//временно
+        }
+        if CGFloat(h) > ScrollView.visibleSize.height
+        {
+            ScrollView.contentSize.height = CGFloat(h)
+        }
         
+        //пролистывание вниз при новом сообщении
+        ScrollView.scrollRectToVisible(CGRect(x: 0, y: ScrollView.contentSize.height - ScrollView.visibleSize.height, width: ScrollView.viewWidth, height: ScrollView.visibleSize.height), animated: false)
+
+
         TextArea.translatesAutoresizingMaskIntoConstraints = false
         TextArea.backgroundColor = .systemBackground
         TextArea.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 18)
