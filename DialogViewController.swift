@@ -14,17 +14,7 @@ class DialogViewController: UIViewController
     var messages: [String] = ["1", "jhds"]
     var labels: [UILabel] = []
     let container = UIView()
-    //размеры экрана
-    public var screenWidth: CGFloat
-    {
-        return UIScreen.main.bounds.width
-    }
 
-    public var screenHeight: CGFloat
-    {
-        return UIScreen.main.bounds.height
-    }
-    
     override func viewDidDisappear(_ animated: Bool)
     {
         super.viewDidDisappear(animated)
@@ -44,6 +34,7 @@ class DialogViewController: UIViewController
                 self.view.frame.origin.y -= keyboardSize.height
 
             }
+ 
         }
     }
 //клавиатура прячется
@@ -163,7 +154,7 @@ class DialogViewController: UIViewController
         }
         
         //пролистывание вниз при новом сообщении
-        ScrollView.scrollRectToVisible(CGRect(x: 0, y: ScrollView.contentSize.height - ScrollView.visibleSize.height, width: ScrollView.viewWidth, height: ScrollView.visibleSize.height), animated: false)
+        ScrollView.scrollRectToVisible(CGRect(x: 0, y: ScrollView.contentSize.height - ScrollView.visibleSize.height, width: ScrollView.visibleSize.width, height: ScrollView.visibleSize.height), animated: false)
 
 
         TextArea.translatesAutoresizingMaskIntoConstraints = false
@@ -201,6 +192,8 @@ class DialogViewController: UIViewController
         
     }
         
+    
+    
     @objc func SendButtonClicked(_ sender: Any)
     {
         if TextArea.text != ""

@@ -12,8 +12,6 @@
 		CE48F90C280428500076068D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE48F90B280428500076068D /* ViewController.swift */; };
 		CE48F911280428520076068D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE48F910280428520076068D /* Assets.xcassets */; };
 		CE48F914280428520076068D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE48F912280428520076068D /* LaunchScreen.storyboard */; };
-		CE715439280698BF00C833D6 /* viewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE715438280698BF00C833D6 /* viewExtention.swift */; };
-		CEB2F91D281A8AD2003A9F3B /* scrollviewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEB2F91C281A8AD2003A9F3B /* scrollviewExtension.swift */; };
 		CED956072813F13E00C1C462 /* DialogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CED956062813F13E00C1C462 /* DialogViewController.swift */; };
 		CED956092814074B00C1C462 /* send.png in Resources */ = {isa = PBXBuildFile; fileRef = CED956082814074B00C1C462 /* send.png */; };
 /* End PBXBuildFile section */
@@ -26,8 +24,6 @@
 		CE48F910280428520076068D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE48F913280428520076068D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CE48F915280428520076068D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CE715438280698BF00C833D6 /* viewExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewExtention.swift; sourceTree = "<group>"; };
-		CEB2F91C281A8AD2003A9F3B /* scrollviewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = scrollviewExtension.swift; sourceTree = "<group>"; };
 		CED956062813F13E00C1C462 /* DialogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogViewController.swift; sourceTree = SOURCE_ROOT; };
 		CED956082814074B00C1C462 /* send.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = send.png; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -62,8 +58,6 @@
 		CE48F906280428500076068D /* test2 */ = {
 			isa = PBXGroup;
 			children = (
-				CE715438280698BF00C833D6 /* viewExtention.swift */,
-				CEB2F91C281A8AD2003A9F3B /* scrollviewExtension.swift */,
 				CED956062813F13E00C1C462 /* DialogViewController.swift */,
 				CE48F907280428500076068D /* AppDelegate.swift */,
 				CE48F909280428500076068D /* SceneDelegate.swift */,
@@ -148,11 +142,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CE48F90C280428500076068D /* ViewController.swift in Sources */,
-				CEB2F91D281A8AD2003A9F3B /* scrollviewExtension.swift in Sources */,
 				CED956072813F13E00C1C462 /* DialogViewController.swift in Sources */,
 				CE48F908280428500076068D /* AppDelegate.swift in Sources */,
 				CE48F90A280428500076068D /* SceneDelegate.swift in Sources */,
-				CE715439280698BF00C833D6 /* viewExtention.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
