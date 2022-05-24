@@ -4,56 +4,61 @@
 
 import UIKit
 
-//самый нижний слой
 class DialogViewController: UIViewController
 {
     let TextArea = UITextView()
     let MainView = UIView()
-    let contentView = UIView()
+    let BottomPanel = UIView()
     let ScrollView = UIScrollView()
     var messages: [String] = ["1", "jhds"]
     var labels: [UILabel] = []
-    let container = UIView()
 
     override func viewDidDisappear(_ animated: Bool)
     {
         super.viewDidDisappear(animated)
-
     }
-    deinit {
+    deinit
+    {
          NotificationCenter.default.removeObserver(self)
-       }
+    }
 
 // клавиатура вылезает
-    @objc func keyboardWillShow(notification: NSNotification)
+    @objc func keyboardDidShow(notification: NSNotification)
     {
-        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue
+        else
         {
-            if self.view.frame.origin.y == 0
-            {
-                self.view.frame.origin.y -= keyboardSize.height
-
-            }
- 
+            return
         }
+        //работает
+        MainView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -keyboardSize.height).isActive = true
     }
 //клавиатура прячется
-    @objc func keyboardWillHide(notification: NSNotification)
+    @objc func keyboardDidHide(notification: NSNotification)
     {
-        if self.view.frame.origin.y != 0
-        {
-            self.view.frame.origin.y = 0
-        }
+
+        MainView.translatesAutoresizingMaskIntoConstraints = false
+        //не работает
+        MainView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
     
     override func viewDidLoad()
     {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        MainView.backgroundColor = UIColor.systemGray5
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+                
+        CreateMainView()
+        CreateBottomPanel()
+        CreateScrollView()
 
+        UpdateLabels()
+        
+    }
+    func CreateMainView()
+    {
+        MainView.backgroundColor = UIColor.systemGray5
+        view.backgroundColor = UIColor.systemGray5
         view.addSubview(MainView)
 
         MainView.translatesAutoresizingMaskIntoConstraints = false
@@ -67,52 +72,93 @@ class DialogViewController: UIViewController
 
             ]
         )
-        
+    }
+    func CreateScrollView()
+    {
         ScrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
+        //contentView.translatesAutoresizingMaskIntoConstraints = false
         MainView.addSubview(ScrollView)
-        ScrollView.addSubview(contentView)
+        //ScrollView.addSubview(contentView)
         NSLayoutConstraint.activate(
             [
                 ScrollView.leftAnchor.constraint(equalTo: ScrollView.superview!.safeAreaLayoutGuide.leftAnchor),
                 ScrollView.topAnchor.constraint(equalTo: ScrollView.superview!.safeAreaLayoutGuide.topAnchor),
                 ScrollView.rightAnchor.constraint(equalTo: ScrollView.superview!.safeAreaLayoutGuide.rightAnchor),
-                ScrollView.bottomAnchor.constraint(equalTo: ScrollView.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -55.0),
+                ScrollView.bottomAnchor.constraint(equalTo: BottomPanel.safeAreaLayoutGuide.topAnchor),
                 
                 ScrollView.contentLayoutGuide.widthAnchor.constraint(equalTo: ScrollView.superview!.widthAnchor),
                 //ScrollView.heightAnchor.constraint(equalToConstant: ScrollView.superview!.heightAnchor),
-                
-                
+            ]
+        )
+    }
+    
+    func CreateBottomPanel()
+    {
+        MainView.addSubview(BottomPanel)
+        BottomPanel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(
+            [
+                BottomPanel.rightAnchor.constraint(equalTo: BottomPanel.superview!.safeAreaLayoutGuide.rightAnchor),
+                BottomPanel.topAnchor.constraint(equalTo: BottomPanel.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -55 ),
+                BottomPanel.bottomAnchor.constraint(equalTo: BottomPanel.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+                BottomPanel.leftAnchor.constraint(equalTo: BottomPanel.superview!.safeAreaLayoutGuide.leftAnchor)
+            ]
+        )
+        TextArea.translatesAutoresizingMaskIntoConstraints = false
+        TextArea.backgroundColor = .systemBackground
+        TextArea.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 18)
+        TextArea.layer.cornerRadius = 10
+        BottomPanel.addSubview(TextArea)
+        
+        NSLayoutConstraint.activate(
+            [
+                TextArea.rightAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.rightAnchor, constant: -70),
+                TextArea.topAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.topAnchor, constant: 5),
+                TextArea.bottomAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+                TextArea.leftAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.leftAnchor, constant: 20)
+
             ]
         )
         
-        contentView.addSubview(container)
-        container.translatesAutoresizingMaskIntoConstraints = false
+        let SendButton = UIButton()
+        
+        SendButton.setImage(UIImage(named: "send.png"), for: .normal)
+        SendButton.addTarget(self, action: #selector(SendButtonClicked), for: .touchUpInside)
+        BottomPanel.addSubview(SendButton)
+        
+        SendButton.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(
-        [
-            container.leftAnchor.constraint(equalTo: container.superview!.leftAnchor, constant: 8.0),
-            container.topAnchor.constraint(equalTo: container.superview!.topAnchor, constant: 8.0),
+            [
+                SendButton.rightAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.rightAnchor, constant: -15),
+                SendButton.topAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.topAnchor, constant: 5 ),
+                SendButton.bottomAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+                SendButton.leftAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.rightAnchor, constant: -55)
 
-            container.rightAnchor.constraint(equalTo: container.superview!.rightAnchor, constant: -8.0),
-            container.bottomAnchor.constraint(equalTo: container.superview!.bottomAnchor, constant: 108.0)
-        ])
-        contentView.sizeToFit()
-        labels.removeAll()
+            ]
+        )
+    }
+    func AddLabel(_ i : Int)
+    {
+        labels.append(UILabel())
+        labels.last!.text = (messages[i])
+        labels.last!.backgroundColor = UIColor.systemCyan
+        labels.last!.textColor = .white
+    
+        ScrollView.addSubview(labels.last!)
+        labels.last!.textAlignment = .center
+        labels.last!.numberOfLines = 0
+        labels.last!.sizeToFit()
+        labels.last!.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 20)
+        labels.last!.layer.cornerRadius = 15
+        labels.last!.layer.masksToBounds = true
+        labels.last!.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    func CreateLabels()
+    {
         for i in 0..<messages.count
         {
-            labels.append(UILabel())
-            labels.last!.text = (messages[i])
-            labels.last!.backgroundColor = UIColor.systemCyan
-            labels.last!.textColor = .white
-        
-            ScrollView.addSubview(labels.last!)
-            labels.last!.textAlignment = .center
-            labels.last!.numberOfLines = 0
-            labels.last!.sizeToFit()
-            labels.last!.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 20)
-            labels.last!.layer.cornerRadius = 15
-            labels.last!.layer.masksToBounds = true
-            labels.last!.translatesAutoresizingMaskIntoConstraints = false
+            AddLabel(i)
             var size = 45
             if size < messages[i].count * 10 + 20
             {
@@ -141,11 +187,17 @@ class DialogViewController: UIViewController
             }
             
         }
-
+    }
+    
+    func UpdateLabels()
+    {
+        labels.removeAll()
+        
+        CreateLabels()
+        
         var h = 0
         for i in 0..<labels.count
         {
-            
             h += 60//временно
         }
         if CGFloat(h) > ScrollView.visibleSize.height
@@ -155,45 +207,8 @@ class DialogViewController: UIViewController
         
         //пролистывание вниз при новом сообщении
         ScrollView.scrollRectToVisible(CGRect(x: 0, y: ScrollView.contentSize.height - ScrollView.visibleSize.height, width: ScrollView.visibleSize.width, height: ScrollView.visibleSize.height), animated: false)
-
-
-        TextArea.translatesAutoresizingMaskIntoConstraints = false
-        TextArea.backgroundColor = .systemBackground
-        TextArea.font = UIFont(name: TextArea.font?.fontName ?? "HelveticaNeue", size: 18)
-        TextArea.layer.cornerRadius = 10
-        MainView.addSubview(TextArea)
-        
-        NSLayoutConstraint.activate(
-            [
-                TextArea.rightAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.rightAnchor, constant: -70),
-                TextArea.topAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -45 ),
-                TextArea.bottomAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-                TextArea.leftAnchor.constraint(equalTo: TextArea.superview!.safeAreaLayoutGuide.leftAnchor, constant: 20)
-
-            ]
-        )
-        
-        let SendButton = UIButton()
-        
-        SendButton.setImage(UIImage(named: "send.png"), for: .normal)
-        SendButton.addTarget(self, action: #selector(SendButtonClicked), for: .touchUpInside)
-        MainView.addSubview(SendButton)
-        
-        SendButton.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate(
-            [
-                SendButton.rightAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.rightAnchor, constant: -15),
-                SendButton.topAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -50 ),
-                SendButton.bottomAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-                SendButton.leftAnchor.constraint(equalTo: SendButton.superview!.safeAreaLayoutGuide.rightAnchor, constant: -55)
-
-            ]
-        )
-        
     }
         
-    
-    
     @objc func SendButtonClicked(_ sender: Any)
     {
         if TextArea.text != ""
@@ -203,7 +218,7 @@ class DialogViewController: UIViewController
         }
         TextArea.text = ""
         TextArea.endEditing(true)
-        self.viewDidLoad()
+        UpdateLabels()
     }
 
     
